@@ -20,6 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.megam.chef.BootStrapChef;
+import org.megam.chef.parser.CommandJson;
+
+import com.google.gson.Gson;
+
+import static org.megam.chef.Constants.MEGAM_LOG_DIR;
 /**
  * 
  * @author rajthilak
@@ -28,25 +36,32 @@ import java.util.StringTokenizer;
 public class Command {
 
 	private File rdo;
-	private File rde;
+	private File rder;
 	private List<String> cmdList = new ArrayList<String>();
 	private String name;
+	private String node;
 	private String inputCmd;
+	private Logger logger = LoggerFactory.getLogger(Command.class);
+	
+	
+	
 
 	/**
 	 * 
 	 * @param s
 	 */
 	public Command(String[] shellArray) {
+		
 		this.name = shellArray[0].toLowerCase();
-		this.inputCmd = shellArray[1];
+		this.node = shellArray[1];
+	    this.inputCmd = shellArray[2];
 		StringTokenizer st = new StringTokenizer(inputCmd);
 		while (st.hasMoreTokens()) {
 			cmdList.add(st.nextToken());
 		}
 		
-		setRedirectOutput(name+ "out");
-		setRedirectError(name+ "err");
+		setRedirectOutput("out"+"_"+node);
+		setRedirectError("err"+"_"+node);
 	}
 
 	/**
@@ -54,7 +69,9 @@ public class Command {
 	 * @param trdo
 	 */
 	public void setRedirectOutput(String trdo) {
-		this.rdo = new File(trdo);
+		File dir =  new File(MEGAM_LOG_DIR+ name);
+		dir.mkdirs();
+		this.rdo = new File(dir, trdo);
 	}
 
 	/**
@@ -78,9 +95,6 @@ public class Command {
 	 * @return command list
 	 */
 	public List<String> getCommandList() {
-		System.out.println("");
-		System.out.println("get command list:" + cmdList);
-		System.out.println("");
 		return cmdList;
 	}
 
@@ -89,7 +103,9 @@ public class Command {
 	 * @param trde
 	 */
 	public void setRedirectError(String trde) {
-		this.rde = new File(trde);
+		File dir =  new File(MEGAM_LOG_DIR+ name );
+		dir.mkdirs();
+		this.rder = new File(dir,trde);
 	}
 
 	/**
@@ -97,7 +113,8 @@ public class Command {
 	 * @return redirect error file
 	 */
 	public File getRedirectErrorFile() {
-		return rde;
+		
+		return rder;
 	}
 
 	public String toString() {

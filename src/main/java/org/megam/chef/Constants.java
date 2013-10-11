@@ -16,14 +16,14 @@
 package org.megam.chef;
 
 import java.io.File;
-
+import org.megam.chef.parser.CommandJson;
 /**
  * @author ram
  * 
  */
 public class Constants {
 	
-
+	private CommandJson no_name;
 	/**
 	 * The version that gets printed in the log after booting.
 	 */
@@ -62,9 +62,10 @@ public class Constants {
 	/**
 	 * The location of the log file
 	 */
-	public static final String MEGAM_CHEF_LOG = MEGAM_CHEF_ROOT
-			+ java.io.File.separator + "logs" + java.io.File.separator
-			+ "megam_chef.log";
+	public static final String MEGAM_LOG_DIR = MEGAM_CHEF_ROOT
+			+ java.io.File.separator + "logs" + java.io.File.separator;
+	
+	
 	
 	public static final String HELP_GITHUB = "Refer https://github.com/indykish/megam_chef.git for more info.";
 
